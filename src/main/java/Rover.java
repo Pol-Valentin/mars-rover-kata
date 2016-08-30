@@ -1,20 +1,29 @@
+import java.awt.*;
+
 /**
  * Created by pol on 30/08/16.
  */
 public class Rover {
-    private final int positionY;
-    private final int positionX;
+    private Point position;
+    private Direction direction;
 
-    public Rover(int positionX, int positionY) {
-        this.positionX = positionX;
-        this.positionY = positionY;
+    public Rover(Point position, Direction direction) {
+        this.position = position;
+        this.direction = direction;
     }
 
-    public int getPositionY() {
-        return positionY;
+    public Point getPosition() {
+        return position;
     }
 
-    public int getPositionX() {
-        return positionX;
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void send(char commandChar) {
+        Command command = Command.fromOrder(commandChar);
+
+        position = command.getNewPosition(position, direction);
+        direction = command.getNewDirection(direction);
     }
 }
