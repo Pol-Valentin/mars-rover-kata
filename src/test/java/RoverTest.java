@@ -41,7 +41,7 @@ public class RoverTest {
     }
 
     private void when_we_do_nothing() {
-
+        when_we_send();
     }
 
     private void given_a_rover_at(int x, int y, Direction direction) {
@@ -54,25 +54,43 @@ public class RoverTest {
     public void it_should_move_forward() {
         given_a_rover_at(10, 5, Direction.NORTH);
         when_we_send('f');
-        given_expected_position(10, 6);
-        then_position_should_be(expectedPosition);
+        then_position_should_be(10, 6);
     }
 
     @Test
     public void it_should_move_backward() {
         given_a_rover_at(10, 5, Direction.NORTH);
         when_we_send('b');
-        given_expected_position(10, 4);
-        then_position_should_be(expectedPosition);
+        then_position_should_be(10, 4);
+    }
+
+    @Test
+    public void it_should_turn_left() {
+        given_a_rover_at(10, 5, Direction.NORTH);
+        when_we_send('l');
+        then_position_should_be(10, 5);
+        then_direction_should_be(Direction.WEST);
+    }
+
+    @Test
+    public void it_should_turn_right() {
+        given_a_rover_at(10, 5, Direction.NORTH);
+        when_we_send('r');
+        then_position_should_be(10, 5);
+        then_direction_should_be(Direction.EAST);
     }
 
     @Test
     public void it_should_move_left() {
         given_a_rover_at(10, 5, Direction.NORTH);
         when_we_send('l', 'f');
-        given_expected_position(9, 5);
-        then_position_should_be(expectedPosition);
+        then_position_should_be(9, 5);
     }
+
+    private void then_position_should_be(int x, int y) {
+        assertEquals(new Point(x, y), SUT.getPosition());
+    }
+
     private void given_expected_position(int x, int y) {
         this.expectedPosition = new Point(x, y);
     }

@@ -1,72 +1,38 @@
 import java.awt.*;
 
-import static java.util.Arrays.stream;
-
 /**
  * Created by pol on 30/08/16.
  */
 public enum Command {
-    FORWARD('f') {
+    f("forward") {
         @Override
-        public Point getNewPosition(final Point point, final Direction direction) {
-            return direction.moveForward(point);
-        }
-
-        @Override
-        public Direction getNewDirection(final Direction direction) {
-            return direction;
+        public RoverState getNewState(final RoverState roverState) {
+            Direction direction = roverState.getDirection();
+            return new RoverState(direction.moveForward(roverState.getPoint()), direction);
         }
     },
-    BACKWARD('b') {
+    b("backward") {
         @Override
-        public Point getNewPosition(final Point point, final Direction direction) {
-            return direction.moveBackward(point);
-        }
-
-        @Override
-        public Direction getNewDirection(final Direction direction) {
-            return direction;
+        public RoverState getNewState(final RoverState roverState) {
+            Direction direction = roverState.getDirection();
+            return new RoverState(direction.moveBackward(roverState.getPoint()), direction);
         }
     },
-    RIGHT('r') {
+    r("right") {
         @Override
-        public Point getNewPosition(final Point point, final Direction direction) {
-            return point;
-        }
-
-        @Override
-        public Direction getNewDirection(final Direction direction) {
-            return direction.turnRight();
+        public RoverState getNewState(final RoverState roverState) {
+            return new RoverState(roverState.getPoint(), roverState.getDirection().turnRight());
         }
     },
-    LEFT('l') {
+    l("left") {
         @Override
-        public Point getNewPosition(final Point point, final Direction direction) {
-            return point;
-        }
-
-        @Override
-        public Direction getNewDirection(final Direction direction) {
-            return direction.turnLeft();
+        public RoverState getNewState(final RoverState roverState) {
+            return new RoverState(roverState.getPoint(), roverState.getDirection().turnLeft());
         }
     };
 
-    public final char order;
-
-    Command(char order) {
-        this.order = order;
+    Command(String name) {
     }
 
-    public static Command fromOrder(char order) {
-        try {
-            return stream(Command.values()).filter(x -> x.order == order).findFirst().get();
-        } catch (RuntimeException exception) {
-            throw new IllegalArgumentException("Unkown order '" + order + "'");
-        }
-    }
-
-    public abstract Point getNewPosition(Point point, Direction direction);
-
-    public abstract Direction getNewDirection(Direction direction);
-
+    public abstract RoverState getNewState(final RoverState roverState);
 }

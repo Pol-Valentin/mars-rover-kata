@@ -4,26 +4,23 @@ import java.awt.*;
  * Created by pol on 30/08/16.
  */
 public class Rover {
-    private Point position;
-    private Direction direction;
+    private RoverState roverState;
 
     public Rover(Point position, Direction direction) {
-        this.position = position;
-        this.direction = direction;
+        this.roverState = new RoverState(position, direction);
     }
 
     public Point getPosition() {
-        return position;
+        return roverState.getPoint();
     }
 
     public Direction getDirection() {
-        return direction;
+        return roverState.getDirection();
     }
 
-    public void send(char commandChar) {
-        Command command = Command.fromOrder(commandChar);
+    public void send(char order) {
+        Command command = Command.valueOf(String.valueOf(order));
 
-        position = command.getNewPosition(position, direction);
-        direction = command.getNewDirection(direction);
+        roverState = command.getNewState(roverState);
     }
 }
